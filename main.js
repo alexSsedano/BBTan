@@ -26,7 +26,9 @@ function newRound(){
 	}
 	nRonda++;
 }
+
 addPointer();
+addPath();
 newRound();
 
 function moveCubesDown(){
@@ -206,7 +208,7 @@ function deleteBlock(posI, posO){
 	}
 }
 
-function colisionTop(i,o,posBallArray){
+function colisionTop(i, o, posBallArray){
 	if(blockArray[i][o].cubeY<=ballsArray[posBallArray].posY+ballsArray[i].radio && ballsArray[posBallArray].posY+ballsArray[i].radio <= blockArray[i][o].cubeY +15){
 		if(blockArray[i][o].cubeX<=ballsArray[posBallArray].posX && ballsArray[posBallArray].posX <= blockArray[i][o].cubeX +50){
 			if(ballsArray[posBallArray].subir){	
@@ -328,11 +330,19 @@ function cordsPointer(e){
 	let y = (yu - ydown) * 10;
 	
 	
-
-	
 	document.getElementsByTagName("line")[0].setAttribute("x2", 350-x);
 	document.getElementsByTagName("line")[0].setAttribute("y2", 700-y);
 	
+}
+function addPath(){
+var newpath = document.createElementNS("http://www.w3.org/2000/svg","path");  
+newpath.setAttribute("id", "pathIdD");  
+newpath.setAttribute("d", "M0 3500 l0 -3500 1249 0 1248 0 6 83 c7 116 40 236 97 352 129 266 362 458 650 537 73 19 109 23 250 23 141 0 177 -4 250 -23 288 -79 521 -271 650 -537 57 -116 90 -236 97 -352 l6 -83 1248 0 1249 0 0 3500 0 3500 -3500 0 -3500 0 0 -3500z");   
+newpath.setAttribute("transform", "translate(0.000000,700.000000) scale(0.100000,-0.100000)");  
+newpath.setAttribute("fill", "black");
+
+
+document.getElementsByTagName("svg")[0].appendChild(newpath);
 }
 
 document.getElementById("tablero").onmouseup=getMousePositionUp;
