@@ -11,6 +11,7 @@ var yup;
 var xdown;
 var ydown;
 var clock;
+var mooving = false ;
 
 
 
@@ -27,12 +28,8 @@ function newRound(){
 	nRonda++;
 }
 
-addPointer();
-addPath();
-newRound();
 
 function moveCubesDown(){
-
     for(let i = 0; i < blockArray.length; i++){
 		for(let o =0; o <= blockArray[i].length-1;o++){
 			if(blockArray[i][o][0] != false){
@@ -48,7 +45,6 @@ function moveCubesDown(){
 
 function moovement(moovementX,moovementY){
 	svg = document.getElementById("tablero");
-	
 	for(let i=0 ;i <= ballsArray.length-1; i++){
 		if(ballsArray[i].onmoove == true){
 			StartColision(i);
@@ -63,7 +59,6 @@ function moovement(moovementX,moovementY){
 				ballsArray[i].posY += moovementY;
 				if(ballsArray[i].posY >= 700 - ballsArray[i].radio){
 					ballsArray[i].onmoove = false;
-					
 				}
 			}
 			if(ballsArray[i].derecha){
@@ -120,41 +115,46 @@ function endOfRound(arr){
 			moveCubesDown();
 			resetBalls();
 			cont =10;
+			mooving = false;
 		}
 	}
 }
 
 function getMousePositionDown(e){
-	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(255,255,255);stroke-width:2");
-	e.preventDefault();
-	let rect = e.target.getBoundingClientRect();
-  	xdown= e.clientX - rect.left; 
-  	ydown = e.clientY - rect.top; 
+	if(!mooving){
+		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(255,255,255);stroke-width:2");
+		e.preventDefault();
+		let rect = e.target.getBoundingClientRect();
+		xdown= e.clientX - rect.left; 
+		ydown = e.clientY - rect.top; 
+	}
 }
 
 function getMousePositionUp(e){
-	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
-	let rect = e.target.getBoundingClientRect();
-  	xup= e.clientX - rect.left; 
-  	yup = e.clientY - rect.top;
-	let x = (xup - xdown) / 10;
-	let y = (yup - ydown) / 10;
-	if( x >= 1 && y >= 1){
-		if(x >= 2){
-			y = (2/ x) * y;
-			x =2;
+	if(!mooving){
+		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
+		let rect = e.target.getBoundingClientRect();
+		xup= e.clientX - rect.left; 
+		yup = e.clientY - rect.top;
+		let x = (xup - xdown) ;
+		let y = (yup - ydown) ;
+		if(x >= 5){
+				y = (5/ x) * y;
+				x =5;
+			}
+			if( y >= 5){
+				x = (5/y) * x;
+				y = 5;
+			}
+		if( x >= 1 && y >= 1){
+			 clock = setInterval(shot, 1, x, y, false);
+		}else if(x < 1 && y >= 1){
+			for(let i=0; i<= ballsArray-1; i++ ){
+				ballsArray[i].derecha = true;
+			}
+			 clock = setInterval(shot, 1, Math.abs(x), y, true );
 		}
-		if( y >= 2){
-			x = (2/y) * x;
-			y = 2;
-		}
-		
-		 clock = setInterval(shot, 1, x, y, false);
-	}else if(x < 1 && y >= 1){
-		for(let i=0; i<= ballsArray-1; i++ ){
-			ballsArray[i].derecha = true;
-		}
-		 clock = setInterval(shot, 1, Math.abs(x), y, true );
+		mooving = true;
 	}
 }
 
@@ -271,8 +271,7 @@ function colisionTopBottom(posBallArray){
 					colisionLeft(i,o,posBallArray);
 					colisionRight(i,o,posBallArray);
 					colisionBottom(i,o,posBallArray);
-					colisionTop(i,o,posBallArray);
-					
+					colisionTop(i,o,posBallArray);	
 				}
 			}
 		}
@@ -295,17 +294,15 @@ function endOfGame(){
 	}else{
 		return false;
 	}
-	
 }
+
  function numberReposition(i,o){
 	 if(blockArray[i][o].num >=10 && blockArray[i][o].num -1 <= 9){
 		 let newPos = parseInt(blockArray[i][o].nHits.getAttribute("x"));
-		 
 		 blockArray[i][o].nHits.setAttribute("x", newPos+6);
 	 }
 	  if(blockArray[i][o].num >=100 && blockArray[i][o].num -1 <= 99){
 		 let newPos = parseInt(blockArray[i][o].nHits.getAttribute("x"));
-		 
 		 blockArray[i][o].nHits.setAttribute("x", newPos+7);
 	 }
  }
@@ -316,36 +313,40 @@ function addPointer(){
 	pointer.setAttribute("x2", 350);
 	pointer.setAttribute("y1", 700);
 	pointer.setAttribute("y2", 600);
-	
 	pointer.setAttribute("style", "stroke:rgb(255,255,255);stroke-width:2");
 	var container = document.getElementsByTagName("svg")[0];
 	container.appendChild(pointer);
 	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
 }
+
 function cordsPointer(e){
-	let rect = e.target.getBoundingClientRect();
-  	let xu= e.clientX - rect.left; 
-  	let yu = e.clientY - rect.top;
-	let x = (xu - xdown) * 10 ;
-	let y = (yu - ydown) * 10;
-	
-	
-	document.getElementsByTagName("line")[0].setAttribute("x2", 350-x);
-	document.getElementsByTagName("line")[0].setAttribute("y2", 700-y);
-	
+	if(!mooving){
+		let rect = e.target.getBoundingClientRect();
+		let xu= e.clientX - rect.left; 
+		let yu = e.clientY - rect.top;
+		let x = (xu - xdown) ;
+		let y = (yu - ydown) ;
+		document.getElementsByTagName("line")[0].setAttribute("x2", 350-x);
+		document.getElementsByTagName("line")[0].setAttribute("y2", 700-y);
+	}
 }
+
 function addPath(){
-var newpath = document.createElementNS("http://www.w3.org/2000/svg","path");  
-newpath.setAttribute("id", "pathIdD");  
-newpath.setAttribute("d", "M0 3500 l0 -3500 1249 0 1248 0 6 83 c7 116 40 236 97 352 129 266 362 458 650 537 73 19 109 23 250 23 141 0 177 -4 250 -23 288 -79 521 -271 650 -537 57 -116 90 -236 97 -352 l6 -83 1248 0 1249 0 0 3500 0 3500 -3500 0 -3500 0 0 -3500z");   
-newpath.setAttribute("transform", "translate(0.000000,700.000000) scale(0.100000,-0.100000)");  
-newpath.setAttribute("fill", "black");
-
-
-document.getElementsByTagName("svg")[0].appendChild(newpath);
+	var newpath = document.createElementNS("http://www.w3.org/2000/svg","path");  
+	newpath.setAttribute("id", "pathIdD");  
+	newpath.setAttribute("d", "M0 3500 l0 -3500 1249 0 1248 0 6 83 c7 116 40 236 97 352 129 266 362 458 650 537 73 19 109 23 250 23 141 0 177 -4 250 -23 288 -79 521 -271 650 -537 57 -116 90 -236 97 -352 l6 -83 1248 0 1249 0 0 3500 0 3500 -3500 0 -3500 0 0 -3500z");   
+	newpath.setAttribute("transform", "translate(0.000000,700.000000) scale(0.100000,-0.100000)");  
+	newpath.setAttribute("fill", "black");
+	document.getElementsByTagName("svg")[0].appendChild(newpath);
 }
 
-document.getElementById("tablero").onmouseup=getMousePositionUp;
+addPointer();
+addPath();
+newRound();
+document.getElementById("tablero").addEventListener("mouseup", getMousePositionUp) ;
+													
+//document.getElementById("tablero").onmouseup=getMousePositionUp;
+
 document.getElementById("tablero").onmousedown=getMousePositionDown;
 document.getElementById("tablero").onmousemove=cordsPointer;
 
