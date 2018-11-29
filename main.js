@@ -142,19 +142,25 @@ function getMousePositionUp(e){
 				y = (5/ x) * y;
 				x =5;
 			}
+		if(x <= -5){
+				y = (-5 / x) * y;
+				x =-5;
+			}
 			if( y >= 5){
 				x = (5/y) * x;
 				y = 5;
 			}
 		if( x >= 1 && y >= 1){
-			 clock = setInterval(shot, 1, x, y, false);
+			clock = setInterval(shot, 1, x, y, false);
+			mooving = true;
 		}else if(x < 1 && y >= 1){
 			for(let i=0; i<= ballsArray-1; i++ ){
 				ballsArray[i].derecha = true;
 			}
-			 clock = setInterval(shot, 1, Math.abs(x), y, true );
+			clock = setInterval(shot, 1, Math.abs(x), y, true );
+			mooving = true;
 		}
-		mooving = true;
+		
 	}
 }
 
@@ -344,9 +350,6 @@ addPointer();
 addPath();
 newRound();
 document.getElementById("tablero").addEventListener("mouseup", getMousePositionUp) ;
-													
-//document.getElementById("tablero").onmouseup=getMousePositionUp;
-
 document.getElementById("tablero").onmousedown=getMousePositionDown;
 document.getElementById("tablero").onmousemove=cordsPointer;
 
