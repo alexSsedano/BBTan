@@ -1,88 +1,90 @@
 // JavaScript Document
 import  {Block} from './block.js';
 import  {Ball} from './block.js';
-var blockArray =[];
-var nRonda =0;
-var ballsArray =[];
-var svg;
-var cont =10;
-var xup;
-var yup;
-var xdown;
-var ydown;
-var clock;
-var mooving = false ;
+
+class BBTanGame{
+	constructor(){
+		this.blockArray =[];
+		this.nRonda =0;
+		this.ballsArray =[];
+		this.svg;
+		this.cont =10;
+		this.xup;
+		this.yup;
+		this.xdown;
+		this.ydown;
+		this.clock;
+		this.mooving = false ;
+}
 
 
-
-
-function newRound(){
-	blockArray.push([]);
+newRound(){
+	this.blockArray.push([]);
 	for(let i=0;i<= 13;i++){
 		let x =2+ (i *50);
 		let porcentaje = Math.floor(Math.random() * (100 - 1)) + 1;
 		if(porcentaje >=40){
-			blockArray[nRonda].push(new Block(x, 2, "svg", nRonda ));
+			this.blockArray[this.nRonda].push(new Block(x, 2, "svg", this.nRonda ));
 		}
 	}
-	nRonda++;
+	this.nRonda++;
 }
 
 
-function moveCubesDown(){
-    for(let i = 0; i < blockArray.length; i++){
-		for(let o =0; o <= blockArray[i].length-1;o++){
-			if(blockArray[i][o][0] != false){
-			blockArray[i][o].cube.setAttribute("y", blockArray[i][o].cubeY +50);
-			blockArray[i][o].cubeY += 50;
-			blockArray[i][o].nHits.setAttribute("y", blockArray[i][o].hitY +50);
-			blockArray[i][o].hitY+=50;
+moveCubesDown(){
+    for(let i = 0; i < this.this.blockArray.length; i++){
+		for(let o =0; o <= this.this.blockArray[i].length-1;o++){
+			if(this.this.blockArray[i][o][0] != false){
+			this.this.blockArray[i][o].cube.setAttribute("y", this.this.blockArray[i][o].cubeY +50);
+			this.this.blockArray[i][o].cubeY += 50;
+			this.this.blockArray[i][o].nHits.setAttribute("y", this.this.blockArray[i][o].hitY +50);
+			this.this.blockArray[i][o].hitY+=50;
 			}
 		}
     }
-	newRound();
+	this.newRound();
 }
 
-function moovement(moovementX,moovementY){
-	svg = document.getElementById("tablero");
-	for(let i=0 ;i <= ballsArray.length-1; i++){
-		if(ballsArray[i].onmoove == true){
-			StartColision(i);
-			if(ballsArray[i].subir){
-				ballsArray[i].ball.setAttribute("cy", ballsArray[i].posY - moovementY); 
-				ballsArray[i].posY -= moovementY;
-				if(ballsArray[i].posY <= ballsArray[i].radio){
-					ballsArray[i].subir = false;
+moovement(moovementX,moovementY){
+	this.sv = document.getElementById("tablero");
+	for(let i=0 ;i <= this.ballsArray.length-1; i++){
+		if(this.ballsArray[i].onmoove == true){
+			this.StartColision(i);
+			if(this.ballsArray[i].subir){
+				this.ballsArray[i].ball.setAttribute("cy", this.ballsArray[i].posY - moovementY); 
+				this.ballsArray[i].posY -= moovementY;
+				if(this.ballsArray[i].posY <= this.ballsArray[i].radio){
+					this.ballsArray[i].subir = false;
 				}
 			}else{
-				ballsArray[i].ball.setAttribute("cy", ballsArray[i].posY + moovementY);
-				ballsArray[i].posY += moovementY;
-				if(ballsArray[i].posY >= 700 - ballsArray[i].radio){
-					ballsArray[i].onmoove = false;
+				this.ballsArray[i].ball.setAttribute("cy", this.ballsArray[i].posY + moovementY);
+				this.ballsArray[i].posY += moovementY;
+				if(this.ballsArray[i].posY >= 700 - this.ballsArray[i].radio){
+					this.ballsArray[i].onmoove = false;
 				}
 			}
-			if(ballsArray[i].derecha){
+			if(this.ballsArray[i].derecha){
 				
-				ballsArray[i].ball.setAttribute("cx", ballsArray[i].posX + moovementX); 
-				ballsArray[i].posX += moovementX;
-				if(ballsArray[i].posX >= 700-ballsArray[i].radio){
-					ballsArray[i].derecha = false;	
+				this.ballsArray[i].ball.setAttribute("cx", this.ballsArray[i].posX + moovementX); 
+				this.ballsArray[i].posX += moovementX;
+				if(this.ballsArray[i].posX >= 700-this.ballsArray[i].radio){
+					this.ballsArray[i].derecha = false;	
 				}
 			}else{
-				ballsArray[i].ball.setAttribute("cx", ballsArray[i].posX - moovementX); 
-				ballsArray[i].posX -= moovementX;
-				if(ballsArray[i].posX <= ballsArray[i].radio){
-					ballsArray[i].derecha = true;	
+				this.ballsArray[i].ball.setAttribute("cx", this.ballsArray[i].posX - moovementX); 
+				this.ballsArray[i].posX -= moovementX;
+				if(this.ballsArray[i].posX <= this.ballsArray[i].radio){
+					this.ballsArray[i].derecha = true;	
 				}	
 			}
 		}
 	}
 }
 
-function firstBall(){
+firstBall(){
 	let result = -1;
-	for(let i = 0;i <= ballsArray.length-1;i++){
-		if(ballsArray[i].onmoove==true){
+	for(let i = 0;i <= this.ballsArray.length-1;i++){
+		if(this.ballsArray[i].onmoove==true){
 		}else{
 			result = i;
 		}
@@ -90,54 +92,55 @@ function firstBall(){
 	return result;
 }
 
-function resetBalls(){
-	for(let i = 0; i<= ballsArray.length-1;i++){
-			ballsArray[i].posX = 350;
-			ballsArray[i].posY = 700;
-			ballsArray[i].ball.setAttribute("cx", 350); 
-			ballsArray[i].ball.setAttribute("cy", 700);
+resetBalls(){
+	for(let i = 0; i<= this.ballsArray.length-1;i++){
+			this.ballsArray[i].posX = 350;
+			this.ballsArray[i].posY = 700;
+			this.ballsArray[i].ball.setAttribute("cx", 350); 
+			this.ballsArray[i].ball.setAttribute("cy", 700);
 		}
 }
 
-function endOfRound(arr){
+endOfRound(arr){
 	let conta=0;
 	for(let i = 0; i<= arr.length-1;i++){
 		if(arr[i].onmoove){
 			conta++
 		}
 	}
-	let end = endOfGame();
+	let end = this.endOfGame();
 	if(end){
-		resetBalls();
+		this.resetBalls();
 	}else{
 		if(conta <= 0){
-			clearInterval(clock);
-			moveCubesDown();
-			resetBalls();
-			cont =10;
-			mooving = false;
+			clearInterval(this.clock);
+			this.moveCubesDown();
+			this.resetBalls();
+			this.cont =10;
+			this.mooving = false;
 		}
 	}
 }
 
-function getMousePositionDown(e){
-	if(!mooving){
+getMousePositionDown(e){
+	if(!this.mooving){
 		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(255,255,255);stroke-width:2");
 		e.preventDefault();
 		let rect = e.target.getBoundingClientRect();
-		xdown= e.clientX - rect.left; 
-		ydown = e.clientY - rect.top; 
+		this.xdown= e.clientX - rect.left; 
+		this.ydown = e.clientY - rect.top; 
 	}
 }
 
-function getMousePositionUp(e){
-	if(!mooving){
+getMousePositionUp(e){
+	if(!this.mooving){
 		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
 		let rect = e.target.getBoundingClientRect();
-		xup= e.clientX - rect.left; 
-		yup = e.clientY - rect.top;
-		let x = (xup - xdown) ;
-		let y = (yup - ydown) ;
+		this.xup= e.clientX - rect.left; 
+		this.yup = e.clientY - rect.top;
+		let x = (this.xup - this.xdown) ;
+		let y = (this.yup - this.ydown) ;
+		
 		if(x >= 5){
 				y = (5/ x) * y;
 				x =5;
@@ -150,52 +153,53 @@ function getMousePositionUp(e){
 				x = (5/y) * x;
 				y = 5;
 			}
+		shot(x,y,false);
 		if( x >= 1 && y >= 1){
-			clock = setInterval(shot, 1, x, y, false);
-			mooving = true;
+			this.clock = setInterval(this.shot, 1, x, y, false);
+			this.mooving = true;
 		}else if(x < 1 && y >= 1){
-			for(let i=0; i<= ballsArray-1; i++ ){
-				ballsArray[i].derecha = true;
+			for(let i=0; i<= this.ballsArray-1; i++ ){
+				this.ballsArray[i].derecha = true;
 			}
-			clock = setInterval(shot, 1, Math.abs(x), y, true );
-			mooving = true;
+			this.clock = setInterval(this.shot, 1, Math.abs(x), y, true );
+			this.mooving = true;
 		}
 		
 	}
 }
 
-function shot(moovementX, moovementY, directionX){
-	if(ballsArray.length <= nRonda){
-		ballsArray.push(new Ball(350,700,"svg", directionX) );	
-		for(let i = 0; i<= ballsArray.length-1;i++){
-			ballsArray[i].subir = true;
-			ballsArray[i].derecha = directionX;
+shot(moovementX, moovementY, directionX){
+	if(this.ballsArray.length <= this.nRonda){
+		this.ballsArray.push(new Ball(350,700,"svg", directionX) );	
+		for(let i = 0; i<= this.ballsArray.length-1;i++){
+			this.ballsArray[i].subir = true;
+			this.ballsArray[i].derecha = directionX;
 		}
 	}
-	if(cont/100>=nRonda+2){
-		moovement(moovementX,moovementY);
+	if(this.cont/100>=this.nRonda+2){
+		this.moovement(moovementX,moovementY);
 	}else{
-		if(cont%10 ==0){
-			let posBall = firstBall();
+		if(this.cont%10 ==0){
+			let posBall = this.firstBall();
 			if(posBall == -1){
 				}else{
-					ballsArray[posBall].onmoove=true;
+					this.ballsArray[posBall].onmoove=true;
 			}
 		}
-		cont++;	
-		moovement(moovementX,moovementY);
+		this.cont++;	
+		this.moovement(moovementX,moovementY);
 	}
-	endOfRound(ballsArray);
+	this.endOfRound(this.ballsArray);
 }
 
-function firstCube(){
+firstCube(){
 	let firstBlockPosition = -1;
-	for(let i = blockArray.length-1; i>=0;i--){
-		if(blockArray[i]){
-			for(let o =blockArray[i].length-1; o >=0;o--){
-				if(blockArray[i][o]){
-					if(blockArray[i][o][0] != false){
-						firstBlockPosition = blockArray[i][o].cubeY;
+	for(let i = this.this.blockArray.length-1; i>=0;i--){
+		if(this.this.blockArray[i]){
+			for(let o =this.this.blockArray[i].length-1; o >=0;o--){
+				if(this.this.blockArray[i][o]){
+					if(this.this.blockArray[i][o][0] != false){
+						firstBlockPosition = this.this.blockArray[i][o].cubeY;
 						o = 0;
 					}
 				}
@@ -205,39 +209,39 @@ function firstCube(){
 	return firstBlockPosition;
 }
 
-function deleteBlock(posI, posO){
-	if(blockArray[posI][posO].num <= 0){
-		document.getElementById("tablero").removeChild(blockArray[posI][posO].cube);
-		document.getElementById("tablero").removeChild(blockArray[posI][posO].nHits);
-		blockArray[posI][posO]=[];
-		blockArray[posI][posO][0]=false;
+deleteBlock(posI, posO){
+	if(this.this.blockArray[posI][posO].num <= 0){
+		document.getElementById("tablero").removeChild(this.this.blockArray[posI][posO].cube);
+		document.getElementById("tablero").removeChild(this.this.blockArray[posI][posO].nHits);
+		this.this.blockArray[posI][posO]=[];
+		this.this.blockArray[posI][posO][0]=false;
 	}
 }
 
-function colisionTop(i, o, posBallArray){
-	if(blockArray[i][o].cubeY<=ballsArray[posBallArray].posY+ballsArray[i].radio && ballsArray[posBallArray].posY+ballsArray[i].radio <= blockArray[i][o].cubeY +15){
-		if(blockArray[i][o].cubeX<=ballsArray[posBallArray].posX && ballsArray[posBallArray].posX <= blockArray[i][o].cubeX +50){
-			if(ballsArray[posBallArray].subir){	
+colisionTop(i, o, posBallArray){
+	if(this.this.blockArray[i][o].cubeY<=this.ballsArray[posBallArray].posY+this.ballsArray[i].radio && this.ballsArray[posBallArray].posY+this.ballsArray[i].radio <= this.this.blockArray[i][o].cubeY +15){
+		if(this.this.blockArray[i][o].cubeX<=this.ballsArray[posBallArray].posX && this.ballsArray[posBallArray].posX <= this.blockArray[i][o].cubeX +50){
+			if(this.ballsArray[posBallArray].subir){	
 			}else{
-				numberReposition(i,o);
-				blockArray[i][o].num -=1;
-				blockArray[i][o].nHits.textContent = blockArray[i][o].num;
-				deleteBlock(i,o);
-				ballsArray[posBallArray].subir =true;
+				this.numberReposition(i,o);
+				this.blockArray[i][o].num -=1;
+				this.blockArray[i][o].nHits.textContent = this.blockArray[i][o].num;
+				this.deleteBlock(i,o);
+				this.ballsArray[posBallArray].subir =true;
 			}
 		}
 	}
 }
 
-function colisionBottom(i,o,posBallArray){
-	if(blockArray[i][o].cubeY+35<=ballsArray[posBallArray].posY-ballsArray[i].radio && ballsArray[posBallArray].posY-ballsArray[i].radio <= blockArray[i][o].cubeY +50){
-		if(blockArray[i][o].cubeX<=ballsArray[posBallArray].posX && ballsArray[posBallArray].posX <= blockArray[i][o].cubeX +50){
-			if(ballsArray[posBallArray].subir){
-				numberReposition(i,o);
-				blockArray[i][o].num -=1;
-				blockArray[i][o].nHits.textContent = blockArray[i][o].num;
-				deleteBlock(i,o);
-				ballsArray[posBallArray].subir =false;
+colisionBottom(i,o,posBallArray){
+	if(this.blockArray[i][o].cubeY+35<=this.ballsArray[posBallArray].posY-this.ballsArray[i].radio && this.ballsArray[posBallArray].posY-this.ballsArray[i].radio <= this.blockArray[i][o].cubeY +50){
+		if(this.blockArray[i][o].cubeX<=this.ballsArray[posBallArray].posX && this.ballsArray[posBallArray].posX <= this.blockArray[i][o].cubeX +50){
+			if(this.ballsArray[posBallArray].subir){
+				this.numberReposition(i,o);
+				this.blockArray[i][o].num -=1;
+				this.blockArray[i][o].nHits.textContent = this.blockArray[i][o].num;
+				this.firstCube(i,o);
+				this.ballsArray[posBallArray].subir =false;
 				i =0;
 			}
 			o = 0;
@@ -245,38 +249,38 @@ function colisionBottom(i,o,posBallArray){
 	}
 }
 
-function colisionLeft(i,o,posBallArray){
-	if(blockArray[i][o].cubeX<=ballsArray[posBallArray].posX+ballsArray[i].radio && ballsArray[posBallArray].posX+ballsArray[i].radio <= blockArray[i][o].cubeX + 15){
-		if(blockArray[i][o].cubeY-ballsArray[i].radio<=ballsArray[posBallArray].posY && ballsArray[posBallArray].posY-ballsArray[i].radio <= blockArray[i][o].cubeY + 50){
-			numberReposition(i,o);
-			blockArray[i][o].num -=1;
-			blockArray[i][o].nHits.textContent = blockArray[i][o].num;
-			deleteBlock(i,o);
-			ballsArray[posBallArray].derecha =false;
+colisionLeft(i,o,posBallArray){
+	if(this.blockArray[i][o].cubeX<=this.ballsArray[posBallArray].posX+this.ballsArray[i].radio && this.ballsArray[posBallArray].posX+this.ballsArray[i].radio <= this.blockArray[i][o].cubeX + 15){
+		if(this.blockArray[i][o].cubeY-this.ballsArray[i].radio<=this.ballsArray[posBallArray].posY && this.ballsArray[posBallArray].posY-this.ballsArray[i].radio <= this.blockArray[i][o].cubeY + 50){
+			this.numberReposition(i,o);
+			this.blockArray[i][o].num -=1;
+			this.blockArray[i][o].nHits.textContent = this.blockArray[i][o].num;
+			this.deleteBlock(i,o);
+			this.ballsArray[posBallArray].derecha =false;
 		}
 	}
 }
 
-function colisionRight(i,o,posBallArray){
-	if(blockArray[i][o].cubeX+35<=ballsArray[posBallArray].posX-ballsArray[i].radio && ballsArray[posBallArray].posX-ballsArray[i].radio <= blockArray[i][o].cubeX +50){
-		if(blockArray[i][o].cubeY-ballsArray[i].radio<=ballsArray[posBallArray].posY && ballsArray[posBallArray].posY-ballsArray[i].radio <= blockArray[i][o].cubeY + 50){
-			numberReposition(i,o);
-			blockArray[i][o].num -=1;
-			blockArray[i][o].nHits.textContent = blockArray[i][o].num;
-			deleteBlock(i,o);
-			ballsArray[posBallArray].derecha =true;
+colisionRight(i,o,posBallArray){
+	if(this.blockArray[i][o].cubeX+35<=this.ballsArray[posBallArray].posX-this.ballsArray[i].radio && this.ballsArray[posBallArray].posX-this.ballsArray[i].radio <= this.blockArray[i][o].cubeX +50){
+		if(this.blockArray[i][o].cubeY-this.ballsArray[i].radio<=this.ballsArray[posBallArray].posY && this.ballsArray[posBallArray].posY-this.ballsArray[i].radio <= this.blockArray[i][o].cubeY + 50){
+			this.numberReposition(i,o);
+			this.blockArray[i][o].num -=1;
+			this.blockArray[i][o].nHits.textContent = this.blockArray[i][o].num;
+			this.firstCube(i,o);
+			this.ballsArray[posBallArray].derecha =true;
 		}
 	}
 }
 
-function colisionTopBottom(posBallArray){
-	for(let i = blockArray.length-1; i>=0;i--){
-		if(blockArray[i]){
-			for(let o =blockArray[i].length-1; o >=0;o--){
-				if(blockArray[i][o]){
-					colisionLeft(i,o,posBallArray);
-					colisionRight(i,o,posBallArray);
-					colisionBottom(i,o,posBallArray);
+colisionTopBottom(posBallArray){
+	for(let i = this.blockArray.length-1; i>=0;i--){
+		if(this.blockArray[i]){
+			for(let o =this.blockArray[i].length-1; o >=0;o--){
+				if(this.blockArray[i][o]){
+					this.colisionLeft(i,o,posBallArray);
+					this.colisionRight(i,o,posBallArray);
+					this.colisionBottom(i,o,posBallArray);
 					colisionTop(i,o,posBallArray);	
 				}
 			}
@@ -284,17 +288,17 @@ function colisionTopBottom(posBallArray){
 	}
 }
 
-function StartColision(posBallArray){
-	let posFirstCube = firstCube();
+StartColision(posBallArray){
+	let posFirstCube = this.firstCube();
 	if(posFirstCube != -1){
-		if(posFirstCube >= ballsArray[posBallArray].posY-50){
-			colisionTopBottom(posBallArray);
+		if(posFirstCube >= this.ballsArray[posBallArray].posY-50){
+			this.colisionTopBottom(posBallArray);
 		}
 	}
 }
 
-function endOfGame(){
-	let first = firstCube();
+endOfGame(){
+	let first = this.firstCube();
 	if (first >= 600){
 		return true;
 	}else{
@@ -302,18 +306,18 @@ function endOfGame(){
 	}
 }
 
- function numberReposition(i,o){
-	 if(blockArray[i][o].num >=10 && blockArray[i][o].num -1 <= 9){
-		 let newPos = parseInt(blockArray[i][o].nHits.getAttribute("x"));
-		 blockArray[i][o].nHits.setAttribute("x", newPos+6);
+numberReposition(i,o){
+	 if(this.blockArray[i][o].num >=10 && this.blockArray[i][o].num -1 <= 9){
+		 let newPos = parseInt(this.blockArray[i][o].nHits.getAttribute("x"));
+		 this.blockArray[i][o].nHits.setAttribute("x", newPos+6);
 	 }
-	  if(blockArray[i][o].num >=100 && blockArray[i][o].num -1 <= 99){
-		 let newPos = parseInt(blockArray[i][o].nHits.getAttribute("x"));
-		 blockArray[i][o].nHits.setAttribute("x", newPos+7);
+	  if(this.blockArray[i][o].num >=100 && this.blockArray[i][o].num -1 <= 99){
+		 let newPos = parseInt(this.blockArray[i][o].nHits.getAttribute("x"));
+		 this.blockArray[i][o].nHits.setAttribute("x", newPos+7);
 	 }
  }
 
-function addPointer(){
+addPointer(){
 	var pointer = document.createElementNS("http://www.w3.org/2000/svg", "line");
 	pointer.setAttribute("x1", 350);
 	pointer.setAttribute("x2", 350);
@@ -325,19 +329,19 @@ function addPointer(){
 	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
 }
 
-function cordsPointer(e){
-	if(!mooving){
+cordsPointer(e){
+	if(!this.mooving){
 		let rect = e.target.getBoundingClientRect();
 		let xu= e.clientX - rect.left; 
 		let yu = e.clientY - rect.top;
-		let x = (xu - xdown) ;
-		let y = (yu - ydown) ;
+		let x = (xu - this.xdown) ;
+		let y = (yu - this.ydown) ;
 		document.getElementsByTagName("line")[0].setAttribute("x2", 350-x);
 		document.getElementsByTagName("line")[0].setAttribute("y2", 700-y);
 	}
 }
 
-function addPath(){
+addPath(){
 	var newpath = document.createElementNS("http://www.w3.org/2000/svg","path");  
 	newpath.setAttribute("id", "pathIdD");  
 	newpath.setAttribute("d", "M0 3500 l0 -3500 1249 0 1248 0 6 83 c7 116 40 236 97 352 129 266 362 458 650 537 73 19 109 23 250 23 141 0 177 -4 250 -23 288 -79 521 -271 650 -537 57 -116 90 -236 97 -352 l6 -83 1248 0 1249 0 0 3500 0 3500 -3500 0 -3500 0 0 -3500z");   
@@ -346,12 +350,13 @@ function addPath(){
 	document.getElementsByTagName("svg")[0].appendChild(newpath);
 }
 
-addPointer();
-addPath();
-newRound();
-document.getElementById("tablero").addEventListener("mouseup", getMousePositionUp) ;
-document.getElementById("tablero").onmousedown=getMousePositionDown;
-document.getElementById("tablero").onmousemove=cordsPointer;
 
 
-
+}
+ var juego = new BBTanGame();
+	juego.addPointer();
+	juego.addPath();
+	juego.newRound();
+	document.getElementById("tablero").addEventListener("mouseup", juego.getMousePositionUp) ;
+	document.getElementById("tablero").onmousedown=juego.getMousePositionDown;
+	document.getElementById("tablero").onmousemove=juego.cordsPointer;
