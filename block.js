@@ -18,13 +18,19 @@ export class Block{
 		let porcentaje = Math.floor(Math.random() * (100 - 1)) + 1;
 		this.nHits = document.createElementNS(svgns, "text");
 		if(porcentaje >=11){
-			this.cube.setAttribute('style', " fill:rgb(0,0,0);stroke-width:3;stroke:rgb(0,0,137)" );
+			this.cube.setAttribute('style', " fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,244,240)" );
+			this.cube.setAttribute('rx', '10' );
+			this.cube.setAttribute('ry', '10' );
 			this.num = 1+nRonda;
 			this.nHits.textContent = this.num;
+			this.nHits.setAttribute( "fill", "rgb(0,244,240)");
 		}else{
-			this.cube.setAttribute('style', " fill:rgb(0,0,0);stroke-width:3;stroke:rgb(137,0,137)" );
+			this.cube.setAttribute('style', " fill:rgb(255,255,255);stroke-width:3;stroke:rgb(240,0,244)" );
+			this.cube.setAttribute('rx', '10' );
+			this.cube.setAttribute('ry', '10' );
 			this.num = 2*(1+nRonda);
 			this.nHits.textContent = this.num;
+			this.nHits.setAttribute( "fill", "rgb(240,0,244)");
 		}
 		this.nHits.setAttribute( "x", this.hitX);
 		if(this.num >= 10){
@@ -36,7 +42,7 @@ export class Block{
 		this.nHits.setAttribute( "y", this.hitY);
 		this.nHits.setAttribute("class", "hits");
 		this.nHits.setAttribute( "font-size", 25);
-		this.nHits.setAttribute( "fill", "white");
+		
 		
 		
 		var container = document.getElementsByTagName(link)[0];
@@ -56,7 +62,7 @@ export class Ball{
 		this.ball.setAttribute("cx", this.posX);
 		this.ball.setAttribute("cy", this.posY);
 		this.ball.setAttribute("r", this.radio);
-		this.ball.setAttribute("style", "fill:rgb(255,255,255)");
+		this.ball.setAttribute("style", "fill:rgba(231,57,255,1.00)");
 		this.ball.setAttribute("class", "ball");
 		this.onmoove=false;
 		this.subir = true;

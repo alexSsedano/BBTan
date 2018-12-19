@@ -12,7 +12,8 @@ var xdown;
 var ydown;
 var clock;
 var mooving = false ;
-
+var scoreBoard;
+var roundBoard;
 
 
 
@@ -26,6 +27,7 @@ function newRound(){
 		}
 	}
 	nRonda++;
+	
 }
 
 
@@ -122,7 +124,7 @@ function endOfRound(arr){
 
 function getMousePositionDown(e){
 	if(!mooving){
-		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(255,255,255);stroke-width:2");
+		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgba(231,57,255,1.00);stroke-width:2");
 		e.preventDefault();
 		let rect = e.target.getBoundingClientRect();
 		xdown= e.clientX - rect.left; 
@@ -132,7 +134,7 @@ function getMousePositionDown(e){
 
 function getMousePositionUp(e){
 	if(!mooving){
-		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
+		document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(198,255,254);stroke-width:2");
 		let rect = e.target.getBoundingClientRect();
 		xup= e.clientX - rect.left; 
 		yup = e.clientY - rect.top;
@@ -319,10 +321,10 @@ function addPointer(){
 	pointer.setAttribute("x2", 350);
 	pointer.setAttribute("y1", 700);
 	pointer.setAttribute("y2", 600);
-	pointer.setAttribute("style", "stroke:rgb(255,255,255);stroke-width:2");
+	pointer.setAttribute("style", "stroke:rgb(198,255,254);stroke-width:2");
 	var container = document.getElementsByTagName("svg")[0];
 	container.appendChild(pointer);
-	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(0,0,0);stroke-width:2");
+	document.getElementsByTagName("line")[0].setAttribute("style","stroke:rgb(198,255,254);stroke-width:2");
 }
 
 function cordsPointer(e){
@@ -342,16 +344,41 @@ function addPath(){
 	newpath.setAttribute("id", "pathIdD");  
 	newpath.setAttribute("d", "M0 3500 l0 -3500 1249 0 1248 0 6 83 c7 116 40 236 97 352 129 266 362 458 650 537 73 19 109 23 250 23 141 0 177 -4 250 -23 288 -79 521 -271 650 -537 57 -116 90 -236 97 -352 l6 -83 1248 0 1249 0 0 3500 0 3500 -3500 0 -3500 0 0 -3500z");   
 	newpath.setAttribute("transform", "translate(0.000000,700.000000) scale(0.100000,-0.100000)");  
-	newpath.setAttribute("fill", "black");
+	newpath.setAttribute("fill", "rgb(198,255,254)");
 	document.getElementsByTagName("svg")[0].appendChild(newpath);
 }
 
+function addScoreBoard(){
+	scoreBoard =  document.createElement("DIV");
+	scoreBoard.setAttribute("class", "scoreBoard");
+	let t = document.createElement("H1");
+	let title = document.createTextNode("Score");
+    let points = document.createTextNode(0);
+	t.appendChild(title);
+	scoreBoard.appendChild(t);
+	scoreBoard.appendChild(points);
+	document.body.appendChild(scoreBoard);
+}
+
+function addRoundBoard(){
+	roundBoard =  document.createElement("DIV");
+	let t = document.createElement("H1");
+	let title = document.createTextNode("Round");
+	let p = document.createElement("p");
+	p.setAttribute("class", "roundBoard");
+    let points = document.createTextNode(nRonda);
+	t.appendChild(title);
+	p.appendChild(points);
+	roundBoard.appendChild(t);
+	roundBoard.appendChild(p);
+	document.body.appendChild(roundBoard);
+}
+
+addRoundBoard();
+addScoreBoard();
 addPointer();
 addPath();
 newRound();
 document.getElementById("tablero").addEventListener("mouseup", getMousePositionUp) ;
 document.getElementById("tablero").onmousedown=getMousePositionDown;
 document.getElementById("tablero").onmousemove=cordsPointer;
-
-
-
